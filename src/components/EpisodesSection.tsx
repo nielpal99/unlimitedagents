@@ -1,29 +1,6 @@
 import { Play, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const episodes = [
-  {
-    number: "01",
-    title: "Building AI That Actually Works",
-    guest: "Coming Soon",
-    duration: "45 min",
-    description: "Our first episode explores what it takes to build AI products that solve real problems.",
-  },
-  {
-    number: "02",
-    title: "The Agentic Future",
-    guest: "Coming Soon",
-    duration: "50 min",
-    description: "Diving deep into autonomous agents and how they're reshaping software.",
-  },
-  {
-    number: "03",
-    title: "From Demo to Production",
-    guest: "Coming Soon",
-    duration: "40 min",
-    description: "The challenges of taking AI from impressive demos to reliable production systems.",
-  },
-];
+import { episodes } from "@/data/episodes";
 
 const EpisodesSection = () => {
   return (

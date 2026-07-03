@@ -1,5 +1,5 @@
-import { Play, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Clock, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { episodes } from "@/data/episodes";
 
 const EpisodesSection = () => {
@@ -17,9 +17,10 @@ const EpisodesSection = () => {
         
         <div className="space-y-6">
           {episodes.map((episode) => (
-            <article 
-              key={episode.number}
-              className="group bg-card border border-border rounded-xl p-6 md:p-8 hover:border-primary/30 transition-all hover:glow-sm"
+            <Link
+              key={episode.slug}
+              to={`/episodes/${episode.slug}`}
+              className="group block bg-card border border-border rounded-xl p-6 md:p-8 hover:border-primary/30 transition-all hover:glow-sm"
             >
               <div className="flex flex-col md:flex-row md:items-center gap-6">
                 {/* Episode number */}
@@ -47,19 +48,15 @@ const EpisodesSection = () => {
                   </p>
                 </div>
                 
-                {/* Play button */}
+                {/* View Episode link */}
                 <div className="flex-shrink-0">
-                  <Button 
-                    variant="outline-glow" 
-                    size="lg" 
-                    className="w-full md:w-auto opacity-70 group-hover:opacity-100"
-                  >
-                    <Play className="w-4 h-4" />
-                    Coming Soon
-                  </Button>
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors opacity-70 group-hover:opacity-100">
+                    View Episode
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </div>

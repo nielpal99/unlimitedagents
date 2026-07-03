@@ -1,13 +1,27 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Clock, ArrowRight } from "lucide-react";
+import { Clock, ArrowRight, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { episodes } from "@/data/episodes";
 import Footer from "@/components/Footer";
 
 const Episodes = () => {
+  const [query, setQuery] = useState<string>("");
+
   const sorted = [...episodes].sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
   );
+
+  const filtered = query.trim() === ""
+    ? sorted
+    : sorted.filter((episode) => {
+        const q = query.toLowerCase();
+        return (
+          episode.title.toLowerCase().includes(q) ||
+          episode.guest.toLowerCase().includes(q) ||
+          episode.tags.some((tag) => tag.toLowerCase().includes(q))
+        );
+      });
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,6 +47,18 @@ const Episodes = () => {
               In-depth talks with the founders and engineers shaping the future of AI — sorted newest first.
             </p>
           </div>
+
+          {/* Search */}
+          <div className="relative mt-10 max-w-xl">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by title, guest, or tag…"
+              className="w-full bg-background border border-border rounded-lg pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors placeholder:text-muted-foreground"
+            />
+          </div>
         </div>
       </header>
 
@@ -40,7 +66,16 @@ const Episodes = () => {
       <main className="section-padding">
         <div className="container mx-auto max-w-6xl">
           <div className="space-y-6">
-            {sorted.map((episode) => (
+            {filtered.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-20 text-center bg-card border border-border rounded-xl">
+                <Search className="w-10 h-10 text-muted-foreground/40 mb-4" />
+                <p className="font-display text-lg font-semibold mb-2">No episodes found</p>
+                <p className="text-muted-foreground text-sm">
+                  No episodes match <span className="text-foreground">"{query}"</span>. Try a different title, guest, or tag.
+                </p>
+              </div>
+            )}
+            {filtered.map((episode) => (
               <Link
                 key={episode.slug}
                 to={`/episodes/${episode.slug}`}
